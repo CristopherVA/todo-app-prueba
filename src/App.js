@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { GlobalStyle, Container } from './GlobalStyle'
+import { Todo } from './components/Todo';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
-function App() {
+export const App = () => {
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 0,
+        refetchOnWindowFocus: false
+      },
+    },
+  })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <GlobalStyle />
+          <Container>
+            <Todo />
+          </Container>
+        </QueryClientProvider>
+      </Provider>
+    </>
+  )
 }
-
-export default App;
